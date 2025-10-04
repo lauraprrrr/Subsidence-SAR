@@ -1,0 +1,42 @@
+/* src/components/Header/Header.css */
+
+.site-header {
+  position: fixed; /* Clave para que se quede fijo arriba */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(25, 28, 34, 0.85);
+  backdrop-filter: blur(10px); /* Efecto "cristal" muy moderno */
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  z-index: 1000; /* Asegura que esté por encima de todo */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: top 0.3s ease-in-out;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: white;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.site-nav a {
+  color: #a7b0c0;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: #61dafb; /* El color azul de React */
+}
