@@ -3,3 +3,19 @@
 .App {
   /* Dejaremos esto por ahora. Más adelante lo usaremos para el padding del header. */
 }
+/* src/App.css */
+
+/* Agregamos un fondo general a la página para que las secciones resalten */
+body {
+  background-color: #111418;
+  /* Podríamos poner aquí una imagen de fondo de estrellas */
+  /* background-image: url('URL_DE_IMAGEN_DE_ESTRELLAS'); */
+  /* background-size: cover; */
+  /* background-attachment: fixed; */
+}
+
+/* Este padding "empuja" el contenido de la primera sección hacia abajo,
+   justo por debajo del header fijo. Ajústalo si cambias la altura del header. */
+.story-container {
+  padding-top: 80px; 
+}
