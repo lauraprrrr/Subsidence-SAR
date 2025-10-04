@@ -3,26 +3,39 @@ import os
 from google.cloud import storage
 from datetime import datetime
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# === CONFIGURACIONES ===
 BUCKET_NAME = "sar-rm-santiago"
 LOCAL_DOWNLOAD_DIR = "/home/laura_montaner/data/SAR_raw"
-AOI_WKT = "POLYGON((-70.95 -33.1, -70.45 -33.1, -70.45 -33.6, -70.95 -33.6, -70.95 -33.1))"  # Región Metropolitana aprox.
-START_DATE = "2023-01-01"
-END_DATE = "2025-10-01"
+AOI_WKT = "POLYGON((-70.95 -33.1, -70.45 -33.1, -70.45 -33.6, -70.95 -33.6, -70.95 -33.1))"
+START_DATE = "2016-01-01"
+END_DATE = "2017-01-01"
 PLATFORM = "Sentinel-1"
 BEAMMODE = "IW"
-PRODUCT_TYPE = "SLC"  # MintPy necesita SLC
+PRODUCT_TYPE = "SLC" 
+MAX_THREADS = 4  
 
-# === FUNCIONES ===
 
 def calculate_num_images(duration_months, min_images=2, max_images=12, k=0.3):
-    """
-    Calcula el número de imágenes a descargar proporcional al intervalo
-    """
+    """Calcula el número de imágenes a descargar proporcional al intervalo"""
     n = int(k * duration_months)
     n = max(min_images, min(n, max_images))
     return n
+
+def download_product(product, local_dir):
+    """Descarga un producto SAR si no existe"""
+    file_name = product.properties['fileName']
+    local_path = os.path.join(local_dir, file_name)
+    if os.path.exists(local_path):
+        print(f"⏩ Ya descargado: {file_name}")
+        return local_path
+    try:
+        print(f"⬇️ Descargando: {file_name}")
+        product.download(path=local_dir)
+        return local_path
+    except Exception as e:
+        print(f"❌ Error descargando {file_name}: {e}")
+        return None
 
 def download_and_upload_results():
     print("🔍 Buscando imágenes SAR en ASF...")
@@ -37,53 +50,48 @@ def download_and_upload_results():
 
     total_products = len(results)
     print(f"📦 {total_products} productos encontrados")
-
     if total_products == 0:
         print("⚠️ No se encontraron productos para las fechas y AOI indicadas.")
         return
 
-    # Calcular duración del intervalo
     start_dt = datetime.strptime(START_DATE, "%Y-%m-%d")
     end_dt = datetime.strptime(END_DATE, "%Y-%m-%d")
     duration_months = (end_dt - start_dt).days / 30
 
-    # Determinar cuántas imágenes extraer
     num_images = calculate_num_images(duration_months)
     print(f"ℹ️ Descargando {num_images} imágenes uniformemente distribuidas del total de {total_products}")
 
-    # Seleccionar imágenes uniformemente
     results_sorted = sorted(results, key=lambda p: p.properties['startTime'])
     indices = np.linspace(0, total_products - 1, num=num_images, dtype=int)
     selected_products = [results_sorted[i] for i in indices]
 
-    # Crear carpeta local si no existe
     os.makedirs(LOCAL_DOWNLOAD_DIR, exist_ok=True)
 
-    # Inicializar cliente GCS
+    downloaded_files = []
+    with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
+        futures = {executor.submit(download_product, p, LOCAL_DOWNLOAD_DIR): p for p in selected_products}
+        for f in as_completed(futures):
+            local_path = f.result()
+            if local_path:
+                downloaded_files.append((futures[f], local_path))
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(BUCKET_NAME)
-
-    # Descargar y subir seleccionadas
-    for product in selected_products:
-        file_name = f"{product.properties['fileName']}"
-        local_path = os.path.join(LOCAL_DOWNLOAD_DIR, file_name)
+    for product, local_path in downloaded_files:
+        file_name = product.properties['fileName']
         blob_path = f"raw/{file_name}"
+        blob = bucket.blob(blob_path)
 
         if os.path.exists(local_path):
-            print(f"⏩ Ya descargado: {file_name}")
+            if not blob.exists():
+                print(f"☁️ Subiendo {file_name} a gs://{BUCKET_NAME}/raw/")
+                blob.upload_from_filename(local_path)
+            else:
+                print(f"✅ Ya existe en el bucket: {file_name}")
         else:
-            print(f"⬇️ Descargando: {file_name}")
-            product.download(path=LOCAL_DOWNLOAD_DIR)
-
-        blob = bucket.blob(blob_path)
-        if not blob.exists():
-            print(f"☁️ Subiendo {file_name} a gs://{BUCKET_NAME}/raw/")
-            blob.upload_from_filename(local_path)
-        else:
-            print(f"✅ Ya existe en el bucket: {file_name}")
+            print(f"⚠️ No se encontró el archivo descargado: {file_name}")
 
     print("🎉 Descarga y carga completada.")
-
 
 if __name__ == "__main__":
     start = datetime.now()
