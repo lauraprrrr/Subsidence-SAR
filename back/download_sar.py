@@ -15,7 +15,7 @@ PRODUCT_TYPE = "SLC"
 MAX_THREADS = 4 
 
 
-def calculate_num_images(duration_months, min_images=2, max_images=12, k=0.3):
+def calculate_num_images(duration_months, min_images=2, max_images=6, k=0.3):
     n = int(k * duration_months)
     n = max(min_images, min(n, max_images))
     return n
