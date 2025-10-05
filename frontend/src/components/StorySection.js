@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Element } from 'react-scroll'; // 1. Importa Element
 import './StorySection.css';
 
 // 1. Añadimos "imageUrl" a las props que recibimos
@@ -17,6 +18,7 @@ const StorySection = ({ id, children, imageUrl }) => {
   };
 
   return (
+    <Element name={id}> {/* 2. Usamos Element para permitir el scroll */}
     <section 
       id={id} 
       ref={ref} 
@@ -27,6 +29,7 @@ const StorySection = ({ id, children, imageUrl }) => {
         {children}
       </div>
     </section>
+    </Element>
   );
 };
 

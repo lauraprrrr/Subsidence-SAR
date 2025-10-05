@@ -13,6 +13,8 @@ import terrenoImg from './assets/terreno.jpg';
 import sarBefore from './assets/sar_2020.png'; // Teniendo en cuenta tu .png
 import sarAfter from './assets/sar_2025.jpeg';
 import Footer from './components/Footer'; // Importa el Footer
+import { FaChevronDown } from 'react-icons/fa'; // Importa el icono
+
 
 
 
@@ -26,7 +28,11 @@ function App() {
         <StorySection id="intro" imageUrl={santiagoImg}>
           <h2>El Hundimiento Silencioso de Santiago</h2>
           <p>Bajo nuestros pies, la tierra cede. La extracción insostenible de agua subterránea está causando un hundimiento progresivo en la Región Metropolitana, un fenómeno invisible que amenaza nuestra infraestructura y seguridad hídrica.</p>
+            
         </StorySection>
+          <div className="scroll-indicator">
+        <FaChevronDown />
+          </div>      
 
         <StorySection id="problema" imageUrl={radarImg}>
           <h2>La Evidencia: Antes y Después</h2>

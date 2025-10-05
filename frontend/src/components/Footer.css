@@ -1,10 +1,10 @@
 /* src/components/Footer.css */
 .site-footer {
-  background-color: #111418;
-  color: #a7b0c0;
+  background-color: #e8e8e8; /* Un gris muy claro para el footer */
+  color: #555; /* Texto gris oscuro */
   text-align: center;
   padding: 2rem;
-  border-top: 1px solid #333;
+  border-top: 1px solid #ccc;
 }
 
 .site-footer p {
@@ -19,12 +19,11 @@
 }
 
 .site-footer a {
-  color: #61dafb;
-  text-decoration: none;
+  color: var(--color-accent-blue);
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .site-footer a:hover {
-  color: white;
+  color: var(--color-text-dark);
 }

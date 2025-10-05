@@ -11,14 +11,20 @@
 .story-content {
   max-width: 700px;
   text-align: center;
-  color: white;
-  background-color: rgba(10, 10, 20, 0.6);
-  padding: 2rem;
-  border-radius: 10px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   
-  /* Estado inicial (oculto) */
+  /* --- APLICA ESTOS CAMBIOS --- */
+  color: var(--color-text-dark); /* Texto oscuro para que contraste con el fondo claro */
+  
+  /* El efecto Glassmorphism */
+  background-color: rgba(255, 255, 255, 0.4); /* Fondo blanco muy translúcido */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Un borde sutil que simula el borde del cristal */
+  
+  padding: 2rem;
+  border-radius: 15px; /* Bordes un poco más pronunciados */
+  
+  /* ... (el resto de las propiedades de animación y transición se mantienen) ... */
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s ease-out, transform 0.8s ease-out;
@@ -33,12 +39,13 @@
 .story-content h2 {
   font-size: 3rem;
   margin-top: 0;
-  color: #61dafb;
+  color: var(--color-accent-blue); /* Usamos el azul de la NASA para los títulos */
 }
 
 .story-content p {
   font-size: 1.2rem;
   line-height: 1.6;
+  color: var(--color-text-dark); /* Aseguramos que el párrafo sea oscuro */
 }
 
 .story-section {
@@ -93,7 +100,7 @@
   max-width: 700px;
   text-align: center;
   color: white;
-  background-color: rgba(10, 10, 20, 0.6);
+  background-color: rgba(222, 222, 232, 0.6);
   padding: 2rem;
   border-radius: 10px;
   backdrop-filter: blur(5px);

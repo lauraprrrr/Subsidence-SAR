@@ -13,8 +13,8 @@
 
 /* Estilo de cada tarjeta individual */
 .solution-card {
-  background-color: rgba(40, 44, 52, 0.8);
-  border: 1px solid #61dafb;
+  background-color: #d7d0d0; /* Fondo blanco sólido para las tarjetas */
+  border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1.5rem;
   max-width: 300px;
@@ -32,7 +32,7 @@
 
 .solution-card h3 {
   margin-top: 0;
-  color: #61dafb;
+  color: var(--color-accent-blue);
   font-size: 1.5rem;
   border-bottom: 2px solid rgba(97, 218, 251, 0.5);
   padding-bottom: 0.5rem;
@@ -40,6 +40,7 @@
 }
 
 .solution-card p {
+  color: var(--color-text-dark);
   margin-bottom: 0;
   font-size: 1rem;
   line-height: 1.5;

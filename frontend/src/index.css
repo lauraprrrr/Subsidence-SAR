@@ -1,13 +1,21 @@
 /* src/index.css */
 
+/* 1. Definimos nuestra paleta de colores como variables globales */
+:root {
+  --color-background-light: #f5f7fa; /* Un blanco ligeramente grisáceo, más suave a la vista */
+  --color-text-dark: #1d1d1f;       /* Un negro suave, usado por Apple */
+  --color-accent-blue: #0B3D91;     /* El azul oficial de la NASA */
+  --color-accent-red: #FC3D21;      /* El rojo "worm logo" de la NASA (opcional) */
+  --font-primary: 'Exo 2', sans-serif;
+}
+
 body {
   margin: 0;
-  /* ¡Esta es la única regla de fuente que debe quedar para el body! */
-  font-family: 'Exo 2', sans-serif; 
+  font-family: var(--font-primary); /* Usamos la variable de fuente */
+  background-color: var(--color-background-light); /* Fondo claro */
+  color: var(--color-text-dark); /* Texto oscuro por defecto */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* El color de fondo que teníamos en App.css puede vivir aquí para ser más global */
-  background-color: #111418;
 }
 
 code {
