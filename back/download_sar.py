@@ -5,20 +5,22 @@ from datetime import datetime
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import argparse
+import tempfile
 
 BUCKET_NAME = "sar-rm-santiago"
 LOCAL_DOWNLOAD_DIR = "/home/laura_montaner/data/SAR_raw"
 AOI_WKT = "POLYGON((-70.95 -33.1, -70.45 -33.1, -70.45 -33.6, -70.95 -33.6, -70.95 -33.1))"
 PLATFORM = "Sentinel-1"
 BEAMMODE = "IW"
-PRODUCT_TYPE = "SLC" 
-MAX_THREADS = 4 
+PRODUCT_TYPE = "SLC"
+MAX_THREADS = 4
 
 
 def calculate_num_images(duration_months, min_images=2, max_images=6, k=0.3):
     n = int(k * duration_months)
     n = max(min_images, min(n, max_images))
     return n
+
 
 def download_product(product, local_dir):
     file_name = product.properties['fileName']
@@ -33,6 +35,7 @@ def download_product(product, local_dir):
     except Exception as e:
         print(f"❌ Error descargando {file_name}: {e}")
         return None
+
 
 def download_and_upload_results(start_date, end_date):
     print("🔍 Buscando imágenes SAR en ASF...")
@@ -49,7 +52,7 @@ def download_and_upload_results(start_date, end_date):
     print(f"📦 {total_products} productos encontrados")
     if total_products == 0:
         print("⚠️ No se encontraron productos para las fechas y AOI indicadas.")
-        return
+        return None
 
     start_dt = datetime.strptime(start_date, "%Y-%m-%d")
     end_dt = datetime.strptime(end_date, "%Y-%m-%d")
@@ -72,6 +75,7 @@ def download_and_upload_results(start_date, end_date):
             if local_path:
                 downloaded_files.append((futures[f], local_path))
 
+    # Subir a GCS
     storage_client = storage.Client()
     bucket = storage_client.bucket(BUCKET_NAME)
     for product, local_path in downloaded_files:
@@ -90,6 +94,16 @@ def download_and_upload_results(start_date, end_date):
 
     print("🎉 Descarga y carga completada.")
 
+    # Crear archivo temporal con lista de productos seleccionados
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False, prefix="selected_sar_", suffix=".txt") as tmp_file:
+        for product, local_path in downloaded_files:
+            tmp_file.write(f"{local_path}\n")
+        temp_file_path = tmp_file.name
+
+    print(f"📝 Lista de productos seleccionados guardada temporalmente en {temp_file_path}")
+    return temp_file_path
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Descargar imágenes SAR y subir a GCS")
     parser.add_argument("--start", required=True, help="Fecha de inicio YYYY-MM-DD")
@@ -105,5 +119,8 @@ if __name__ == "__main__":
 
     start_time = datetime.now()
     print(f"🚀 Inicio: {start_time}")
-    download_and_upload_results(args.start, args.end)
+
+    temp_file = download_and_upload_results(args.start, args.end)
+
     print(f"🕒 Tiempo total: {datetime.now() - start_time}")
+    print(f"Archivo temporal de productos seleccionados: {temp_file}")
