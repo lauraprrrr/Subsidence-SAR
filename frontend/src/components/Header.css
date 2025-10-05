@@ -45,10 +45,17 @@
 /* ... (los estilos de .site-header y .header-content se mantienen) ... */
 
 /* NUEVO: Contenedor para título e icono */
+.site-nav {
+  display: flex; /* ¡La propiedad clave! Alinea los hijos en una fila. */
+  align-items: center; /* Centra los items verticalmente por si tienen alturas distintas */
+  gap: 1.5rem; /* Un espacio consistente entre cada item ("Inicio", "Problema", etc.) */
+}
+
 .site-title-container {
   display: flex;
   align-items: center;
   gap: 0.75rem; /* Espacio entre el icono y el texto */
+  cursor: pointer;
 }
 
 .site-icon {
@@ -73,4 +80,73 @@
 /* NUEVO: Estilo para el Link que envuelve el título en HeaderSimple */
 .site-title-link {
   text-decoration: none; /* Quita el subrayado del enlace */
+}
+
+/* 1. Contenedor de cada item de navegación ("Inicio", "Problema", etc.) */
+.nav-item {
+  position: relative; /* ¡Crucial! Permite posicionar el menú desplegable relativo a este elemento. */
+  padding: 10px 0; /* Añade un poco de espacio vertical para que sea más fácil hacer hover */
+}
+
+/* 2. La etiqueta de texto principal (ya no es un enlace) */
+.nav-label {
+  cursor: default; /* El cursor es normal, ya que solo activa el menú */
+  font-weight: 500;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+/* Cuando el link está activo O cuando hacemos hover sobre el item, resaltamos la etiqueta */
+.nav-label.active,
+.nav-item:hover .nav-label {
+  color: var(--color-accent-blue);
+  font-weight: 700;
+}
+
+
+/* 3. El menú desplegable (oculto por defecto) */
+.dropdown-menu {
+  position: absolute; /* Lo sacamos del flujo normal del documento */
+  top: 100%; /* Lo posicionamos justo debajo del .nav-item */
+  left: 50%;
+  
+  /* Estado oculto */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(10px); /* Centrado y ligeramente abajo */
+  transition: all 0.3s ease-in-out;
+  
+  /* Estilos visuales del menú */
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  z-index: 1100; /* Asegura que esté por encima de otros contenidos */
+}
+
+/* 4. El estado visible del menú (cuando tiene la clase .open) */
+.dropdown-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0); /* Vuelve a su posición final */
+}
+
+/* 5. Los enlaces dentro del menú desplegable */
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  color: var(--color-text-dark);
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap; /* Evita que el texto del enlace se parta en dos líneas */
+}
+
+/* 6. El efecto hover para los enlaces del menú */
+.dropdown-menu a:hover {
+  background-color: var(--color-accent-blue);
+  color: white;
 }
