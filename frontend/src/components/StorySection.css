@@ -58,6 +58,11 @@
 }
 
 /* Capa oscura semitransparente sobre la imagen de fondo */
+/* src/components/StorySection.css */
+
+/* ... (la regla .story-section se mantiene igual) ... */
+
+/* Modificamos el overlay */
 .story-section::before {
   content: '';
   position: absolute;
@@ -65,9 +70,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Overlay negro al 50% de opacidad */
-  z-index: 1; /* Se posiciona entre el fondo y el contenido */
+  /* Estado inicial: Casi completamente oscuro */
+  background-color: rgba(0, 0, 0, 0.95); 
+  z-index: 1;
+  /* ¡La transición es la clave! */
+  transition: background-color 1.2s ease-in-out;
 }
+
+/* NUEVO: Cuando la sección es visible, hacemos el overlay más transparente */
+.story-section.is-visible::before {
+  background-color: rgba(0, 0, 0, 0.5); /* El estado final que ya teníamos */
+}
+
+/* ... (el resto del archivo se mantiene igual) ... */
 
 .story-content {
   /* ... (estilos anteriores) ... */

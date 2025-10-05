@@ -38,3 +38,27 @@
 .site-nav a:hover {
   color: #61dafb;
 }
+
+/* src/components/Header.css */
+/* ... (los estilos de .site-header y .header-content se mantienen) ... */
+
+/* NUEVO: Contenedor para título e icono */
+.site-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Espacio entre el icono y el texto */
+}
+
+.site-icon {
+  font-size: 1.8rem;
+  color: #61dafb; /* Color azul de React para el icono */
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700; /* Un poco más de peso */
+  color: #f0f0f0; /* Un blanco menos puro, más suave */
+}
+
+/* ... (el resto del archivo se mantiene) ... */

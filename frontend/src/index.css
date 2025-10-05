@@ -1,10 +1,13 @@
+/* src/index.css */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  /* ¡Esta es la única regla de fuente que debe quedar para el body! */
+  font-family: 'Exo 2', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* El color de fondo que teníamos en App.css puede vivir aquí para ser más global */
+  background-color: #111418;
 }
 
 code {
