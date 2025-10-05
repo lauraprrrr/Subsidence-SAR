@@ -3,42 +3,52 @@
 import './App.css';
 import Header from './components/Header';
 import StorySection from './components/StorySection';
+import ImageComparator from './components/ImageComparator'; // 1. Importa el nuevo componente
 
-// 1. Importamos nuestras imágenes desde la carpeta assets
-import santiagoImg from './assets/santiago.jpeg'; // Reemplaza con tus nombres de archivo
+// Importamos las imágenes de fondo
+import santiagoImg from './assets/santiago.jpeg'; // Teniendo en cuenta tu .jpeg
 import radarImg from './assets/radar.jpg';
 import terrenoImg from './assets/terreno.jpg';
+
+// 2. Importamos las imágenes para el comparador
+import sarBefore from './assets/sar_2020.png'; // Reemplaza con tus nombres de archivo
+import sarAfter from './assets/sar_2025.jpeg';
 
 function App() {
   return (
     <div className="App">
       <Header />
       <main className="story-container">
-        {/* 2. Pasamos cada imagen a la prop imageUrl */}
+        {/* SECCIÓN INICIO - ID 'intro' */}
         <StorySection id="intro" imageUrl={santiagoImg}>
-          <h2>El Hundimiento Silencioso</h2>
+          <h2>El Hundimiento Silencioso de Santiago</h2>
           <p>
-            Bajo la superficie de la Región Metropolitana, un cambio invisible está ocurriendo.
-            La extracción de agua subterránea está provocando que el terreno ceda lentamente,
-            un fenómeno con consecuencias profundas para nuestro futuro.
+            Bajo nuestros pies, la tierra cede. La extracción insostenible de agua subterránea
+            está causando un hundimiento progresivo en la Región Metropolitana, un fenómeno
+            invisible que amenaza nuestra infraestructura y seguridad hídrica.
           </p>
         </StorySection>
 
-        <StorySection id="capitulo1" imageUrl={radarImg}>
-          <h2>Viendo lo Invisible con SAR</h2>
+        {/* SECCIÓN PROBLEMA - ID 'problema' */}
+        <StorySection id="problema" imageUrl={radarImg}>
+          <h2>La Evidencia: Antes y Después</h2>
           <p>
-            Como un espejo mágico, los satélites con Radar de Apertura Sintética (SAR) nos
-            permiten atravesar el velo de lo aparente. Sus pulsos de radar revelan deformaciones
-            milimétricas en la superficie de la Tierra, día y noche, sin importar las nubes.
+            Gracias a la tecnología de Radar de Apertura Sintética (SAR), podemos ver este cambio
+            a lo largo de los años. Las siguientes imágenes satelitales revelan la deformación
+            del terreno. **Desliza para comparar.**
           </p>
+          {/* 3. Añadimos el componente comparador aquí */}
+          <ImageComparator before={sarBefore} after={sarAfter} />
         </StorySection>
 
+        {/* SECCIÓN SOLUCIÓN - ID 'solucion' */}
         <StorySection id="final" imageUrl={terrenoImg}>
-          <h2>Las Cicatrices del Tiempo</h2>
+          <h2>Hacia una Solución Sostenible</h2>
           <p>
-            Al comparar imágenes SAR a lo largo de los años, el hundimiento se hace evidente.
-            Zonas enteras se hunden, afectando la infraestructura y la seguridad hídrica.
-            Estos datos son un llamado a la acción para una gestión sostenible de nuestros recursos.
+            Estos datos no son una sentencia, son una herramienta. Permiten a los municipios
+            identificar zonas de alto riesgo, planificar un desarrollo urbano más seguro y
+            promover políticas de gestión del agua que garanticen el futuro de nuestra región.
+            La concientización es el primer paso.
           </p>
         </StorySection>
       </main>
@@ -46,4 +56,7 @@ function App() {
   );
 }
 
+// 4. Actualizamos el id de la última sección para que coincida con el Header
+// (Lo hice arriba, pero asegúrate que tu última StorySection tenga id="final" si tu header dice "Solución" con href="#final")
+// Corrijo: Tu header dice "Solución" con href="#final", así que el id="final" es correcto.
 export default App;
