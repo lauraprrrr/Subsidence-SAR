@@ -1,15 +1,13 @@
-/* src/components/Header/Header.css */
-
 .site-header {
-  position: fixed; /* Clave para que se quede fijo arriba */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background-color: rgba(25, 28, 34, 0.85);
-  backdrop-filter: blur(10px); /* Efecto "cristal" muy moderno */
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 1rem 2rem;
-  z-index: 1000; /* Asegura que esté por encima de todo */
+  z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: top 0.3s ease-in-out;
 }
@@ -38,5 +36,5 @@
 }
 
 .site-nav a:hover {
-  color: #61dafb; /* El color azul de React */
+  color: #61dafb;
 }

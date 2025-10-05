@@ -1,14 +1,28 @@
 // src/components/StorySection.js
 
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 import './StorySection.css';
 
-// Recibimos "id" y "children" como props.
-// "children" es el contenido que ponemos DENTRO de la etiqueta del componente.
-const StorySection = ({ id, children }) => {
+// 1. Añadimos "imageUrl" a las props que recibimos
+const StorySection = ({ id, children, imageUrl }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  // 2. Creamos un objeto de estilo para el fondo
+  const sectionStyle = {
+    backgroundImage: `url(${imageUrl})`
+  };
+
   return (
-    // Usamos el id para la navegación interna de la página
-    <section id={id} className="story-section">
+    <section 
+      id={id} 
+      ref={ref} 
+      className={`story-section ${inView ? 'is-visible' : ''}`}
+      style={sectionStyle} // 3. Aplicamos el estilo aquí
+    >
       <div className="story-content">
         {children}
       </div>

@@ -1,29 +1,33 @@
-/* src/components/StorySection.css */
-
 .story-section {
-  /* ¡Esto es clave! Cada sección ocupará como mínimo toda la altura de la pantalla. */
-  min-height: 100vh; 
+  min-height: 100vh;
   width: 100%;
-  
-  /* Usamos Flexbox para centrar el contenido vertical y horizontalmente. */
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Padding para que el contenido no toque los bordes. */
   padding: 4rem 2rem;
-  box-sizing: border-box; /* Asegura que el padding no añada altura/anchura extra. */
+  box-sizing: border-box;
 }
 
 .story-content {
-  max-width: 700px; /* Limita el ancho del texto para que sea fácil de leer. */
+  max-width: 700px;
   text-align: center;
   color: white;
-  background-color: rgba(10, 10, 20, 0.6); /* Fondo oscuro para el texto */
+  background-color: rgba(10, 10, 20, 0.6);
   padding: 2rem;
   border-radius: 10px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  
+  /* Estado inicial (oculto) */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 0.8s ease-out;
+}
+
+/* Estado final (visible) */
+.story-section.is-visible .story-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .story-content h2 {
@@ -35,4 +39,51 @@
 .story-content p {
   font-size: 1.2rem;
   line-height: 1.6;
+}
+
+.story-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  
+  /* --- AÑADIR/MODIFICAR ESTO --- */
+  position: relative; /* Necesario para el overlay */
+  background-size: cover; /* La imagen cubre todo el espacio */
+  background-position: center center; /* La imagen se centra */
+  background-attachment: fixed; /* ¡Este es el truco para el efecto parallax! */
+}
+
+/* Capa oscura semitransparente sobre la imagen de fondo */
+.story-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay negro al 50% de opacidad */
+  z-index: 1; /* Se posiciona entre el fondo y el contenido */
+}
+
+.story-content {
+  /* ... (estilos anteriores) ... */
+  position: relative; /* Asegura que el contenido esté por encima del overlay */
+  z-index: 2; /* Un z-index más alto que el del overlay */
+
+  /* ... (el resto de estilos de .story-content se mantienen) ... */
+  max-width: 700px;
+  text-align: center;
+  color: white;
+  background-color: rgba(10, 10, 20, 0.6);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 0.8s ease-out;
 }
