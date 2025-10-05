@@ -7,7 +7,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <footer className="site-footer">
-      <p>Proyecto del equipo [Nombre de tu Equipo] © {currentYear}</p>
+      <p>Subsidence-SAR [Laura y los Moracremas de Michimalongo] © {currentYear}</p>
       <p className="challenge-link">
         <FaGlobe />
         <a href="https://www.spaceappschallenge.org/" target="_blank" rel="noopener noreferrer">

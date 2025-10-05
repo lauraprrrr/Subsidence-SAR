@@ -32,3 +32,26 @@ body {
     transform: translateX(-50%) translateY(-10px);
   }
 }
+
+/* Estilo para nuestro botón de navegación principal */
+.btn-primary {
+  display: inline-block;
+  margin-top: 1.5rem; /* Espacio para separarlo del texto superior */
+  padding: 12px 24px;
+  background-color: var(--color-accent-blue); /* Usamos el azul de la NASA */
+  color: white;
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(11, 61, 145, 0.4); /* Sombra azul al pasar el cursor */
+}

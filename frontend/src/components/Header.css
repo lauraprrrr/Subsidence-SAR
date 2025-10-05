@@ -34,6 +34,7 @@
   margin-left: 1.5rem;
   font-weight: 500;
   transition: color 0.2s ease;
+  cursor: pointer;
 }
 
 .site-nav a:hover {
@@ -67,4 +68,9 @@
   /* Podríamos añadir un borde inferior si quisiéramos */
   border-bottom: 2px solid var(--color-accent-blue); 
   padding-bottom: 4px; 
+}
+
+/* NUEVO: Estilo para el Link que envuelve el título en HeaderSimple */
+.site-title-link {
+  text-decoration: none; /* Quita el subrayado del enlace */
 }
