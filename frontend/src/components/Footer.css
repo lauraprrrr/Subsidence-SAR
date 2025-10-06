@@ -1,0 +1,28 @@
+.site-footer {
+  background-color: #e8e8e8; 
+  color: #555; 
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid #ccc;
+}
+
+.site-footer p {
+  margin: 0.5rem 0;
+}
+
+.challenge-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-footer a {
+  color: var(--color-accent-blue);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.site-footer a:hover {
+  color: var(--color-text-dark);
+}

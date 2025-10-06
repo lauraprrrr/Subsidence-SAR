@@ -1,38 +1,95 @@
-/* src/components/StorySection.css */
-
 .story-section {
-  /* ¡Esto es clave! Cada sección ocupará como mínimo toda la altura de la pantalla. */
-  min-height: 100vh; 
+  min-height: 100vh;
   width: 100%;
-  
-  /* Usamos Flexbox para centrar el contenido vertical y horizontalmente. */
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Padding para que el contenido no toque los bordes. */
   padding: 4rem 2rem;
-  box-sizing: border-box; /* Asegura que el padding no añada altura/anchura extra. */
+  box-sizing: border-box;
 }
 
 .story-content {
-  max-width: 700px; /* Limita el ancho del texto para que sea fácil de leer. */
+  max-width: 700px;
   text-align: center;
-  color: white;
-  background-color: rgba(10, 10, 20, 0.6); /* Fondo oscuro para el texto */
+  
+  color: var(--color-text-dark); 
+  
+  background-color: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  
   padding: 2rem;
-  border-radius: 10px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border-radius: 15px; 
+  
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 0.8s ease-out;
+}
+
+.story-section.is-visible .story-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .story-content h2 {
   font-size: 3rem;
   margin-top: 0;
-  color: #61dafb;
+  color: var(--color-accent-blue); 
 }
 
 .story-content p {
   font-size: 1.2rem;
   line-height: 1.6;
+  color: var(--color-text-dark); 
+}
+
+.story-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  
+  position: relative; 
+  background-size: cover; 
+  background-position: center center; 
+  background-attachment: fixed; 
+}
+
+.story-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95); 
+  z-index: 1;
+  transition: background-color 1.2s ease-in-out;
+}
+
+.story-section.is-visible::before {
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+
+.story-content {
+
+  position: relative; 
+  z-index: 2;
+
+  max-width: 700px;
+  text-align: center;
+  color: white;
+  background-color: rgba(222, 222, 232, 0.6);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 0.8s ease-out;
 }
