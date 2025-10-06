@@ -1,83 +1,87 @@
-<graph id="SAR_Preprocessing">
+<?xml version="1.0" encoding="UTF-8"?>
+<graph id="Interferogram_Workflow">
   <version>1.0</version>
 
-  <node id="Read">
+
+  <node id="Read_Master">
     <operator>Read</operator>
-    <sources/>
     <parameters>
-      <file>${source}</file>
+      <file>${master}</file>
     </parameters>
   </node>
 
-  <node id="Apply-Orbit-File">
-    <operator>Apply-Orbit-File</operator>
-    <sources>
-      <sourceProduct refid="Read"/>
-    </sources>
+  <node id="Read_Slave">
+    <operator>Read</operator>
     <parameters>
-      <continueOnFail>true</continueOnFail>
+      <file>${slave}</file>
     </parameters>
   </node>
 
-  <node id="Thermal-Noise-Removal">
-    <operator>ThermalNoiseRemoval</operator>
-    <sources>
-      <sourceProduct refid="Apply-Orbit-File"/>
-    </sources>
-  </node>
 
-  <node id="Calibration">
-    <operator>Calibration</operator>
+  <node id="TOPSAR_Split_Master">
+    <operator>TOPSAR-Split</operator>
     <sources>
-      <sourceProduct refid="Thermal-Noise-Removal"/>
+      <sourceProduct refid="Read_Master"/>
     </sources>
     <parameters>
-      <outputSigmaBand>true</outputSigmaBand>
-      <selectedPolarisations>VV,VH</selectedPolarisations>
+      <subswath>IW2</subswath>
+      <selectedPolarisations>VV</selectedPolarisations>
     </parameters>
   </node>
 
-  <node id="TOPSAR-Deburst">
+  <node id="TOPSAR_Split_Slave">
+    <operator>TOPSAR-Split</operator>
+    <sources>
+      <sourceProduct refid="Read_Slave"/>
+    </sources>
+    <parameters>
+      <subswath>IW2</subswath>
+      <selectedPolarisations>VV</selectedPolarisations>
+    </parameters>
+  </node>
+
+
+  <node id="Back_Geocoding">
+    <operator>Back-Geocoding</operator>
+    <sources>
+      <sourceProduct refid="TOPSAR_Split_Master"/>
+      <sourceProduct refid="TOPSAR_Split_Slave"/>
+    </sources>
+    
+  </node>
+
+
+  <node id="Interferogram">
+    <operator>Interferogram</operator>
+    <sources>
+      <sourceProduct refid="Back_Geocoding"/>
+    </sources>
+    <parameters>
+      <subtractFlatEarthPhase>true</subtractFlatEarthPhase>
+      <subtractTopographicPhase>true</subtractTopographicPhase>
+      <cohWinRg>10</cohWinRg>
+      <cohWinAz>2</cohWinAz>
+    </parameters>
+  </node>
+
+
+  <node id="TOPSAR_Deburst">
     <operator>TOPSAR-Deburst</operator>
     <sources>
-      <sourceProduct refid="Calibration"/>
+      <sourceProduct refid="Interferogram"/>
     </sources>
   </node>
 
-  <node id="Subset">
-    <operator>Subset</operator>
-    <sources>
-      <sourceProduct refid="TOPSAR-Deburst"/>
-    </sources>
-    <parameters>
-      <geoRegion>POLYGON((-70.9 -33.7, -70.9 -33.3, -70.4 -33.3, -70.4 -33.7, -70.9 -33.7))</geoRegion>
-      <subSamplingX>1</subSamplingX>
-      <subSamplingY>1</subSamplingY>
-      <copyMetadata>true</copyMetadata>
-    </parameters>
-  </node>
 
-  <node id="Terrain-Correction">
-    <operator>Terrain-Correction</operator>
-    <sources>
-      <sourceProduct refid="Subset"/>
-    </sources>
-    <parameters>
-      <demName>SRTM 3Sec</demName>
-      <demResamplingMethod>BILINEAR_INTERPOLATION</demResamplingMethod>
-      <pixelSpacingInMeter>10.0</pixelSpacingInMeter>
-      <mapProjection>EPSG:32719</mapProjection>
-    </parameters>
-  </node>
-
-  <node id="Write">
+  <node id="Write_Result">
     <operator>Write</operator>
     <sources>
-      <sourceProduct refid="Terrain-Correction"/>
+      <sourceProduct refid="TOPSAR_Deburst"/>
     </sources>
     <parameters>
       <file>${output}</file>
-      <formatName>GeoTIFF</formatName>
+      <formatName>BEAM-DIMAP</formatName>
     </parameters>
   </node>
+
 </graph>

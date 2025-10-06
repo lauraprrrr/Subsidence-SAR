@@ -1,27 +1,41 @@
-#!/usr/bin/env python3
+import subprocess
 import argparse
 import os
-import subprocess
-import sys
 
-sys.path.insert(0, os.path.dirname(__file__))  # Para importar download_sar
-import download_sar
+download_script = "download_sar.py"
+process_script = "process_sar.py"
 
-parser = argparse.ArgumentParser(description="Pipeline SAR: descarga y procesa")
-parser.add_argument("--start", required=True, help="Fecha inicio YYYY-MM-DD")
-parser.add_argument("--end", required=True, help="Fecha fin YYYY-MM-DD")
-args = parser.parse_args()
+def main(start_date, end_date):
+    print("🚀 Paso 1: Descargando imágenes SAR...")
+    result = subprocess.run([
+        "python3", download_script,
+        "--start", start_date,
+        "--end", end_date
+    ], capture_output=True, text=True)
+    
+    print(result.stdout)
+    if result.returncode != 0:
+        print("❌ Error en download_sar.py")
+        print(result.stderr)
+        return
 
-# Ejecutar download_sar.py y obtener archivo temporal
-temp_file = download_sar.download_and_upload_results(args.start, args.end)
+    print("🚀 Paso 2: Procesando SAR y generando interferogramas...")
+    result = subprocess.run([
+        "python3", process_script
+    ], capture_output=True, text=True)
+    
+    print(result.stdout)
+    if result.returncode != 0:
+        print("❌ Error en process_sar.py")
+        print(result.stderr)
+        return
 
-# Ruta del workflow relativa al script
-workflow_xml = os.path.join(os.path.dirname(__file__), "sar_workflow.xml")
+    print("🎉 Pipeline completado correctamente.")
 
-# Ejecutar process_sar.py
-subprocess.run([
-    "python3", "process_sar.py",
-    "--temp_file", temp_file,
-    "--workflow", workflow_xml,
-    "--output_dir", "/home/laura_montaner/data/SAR_preprocessed"
-])
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Pipeline SAR: descarga + procesamiento")
+    parser.add_argument("--start", required=True, help="Fecha de inicio YYYY-MM-DD")
+    parser.add_argument("--end", required=True, help="Fecha de fin YYYY-MM-DD")
+    args = parser.parse_args()
+
+    main(args.start, args.end)

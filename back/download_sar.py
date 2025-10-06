@@ -16,7 +16,7 @@ PRODUCT_TYPE = "SLC"
 MAX_THREADS = 4
 
 
-def calculate_num_images(duration_months, min_images=2, max_images=6, k=0.3):
+def calculate_num_images(duration_months, min_images=6, max_images=20, k=0.3):
     n = int(k * duration_months)
     n = max(min_images, min(n, max_images))
     return n
@@ -75,7 +75,7 @@ def download_and_upload_results(start_date, end_date):
             if local_path:
                 downloaded_files.append((futures[f], local_path))
 
-    # Subir a GCS
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(BUCKET_NAME)
     for product, local_path in downloaded_files:
@@ -94,7 +94,7 @@ def download_and_upload_results(start_date, end_date):
 
     print("🎉 Descarga y carga completada.")
 
-    # Crear archivo temporal con lista de productos seleccionados
+
     with tempfile.NamedTemporaryFile(mode="w+", delete=False, prefix="selected_sar_", suffix=".txt") as tmp_file:
         for product, local_path in downloaded_files:
             tmp_file.write(f"{local_path}\n")

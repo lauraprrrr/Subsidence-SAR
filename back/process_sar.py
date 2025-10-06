@@ -1,58 +1,69 @@
-#!/usr/bin/env python3
 import os
 import subprocess
-import argparse
+from glob import glob
+from xml.etree import ElementTree as ET
 
-def process_sar(temp_file_path, workflow_xml, output_dir):
-    # Leer la lista de archivos seleccionados
-    with open(temp_file_path, "r") as f:
-        selected_files = [line.strip() for line in f if line.strip()]
 
-    print(f"📂 Procesando {len(selected_files)} archivos seleccionados...")
+snap_gpt = "/opt/snap/bin/gpt"
+input_dir = "/home/laura_montaner/data/SAR_raw"
+orbit_graph = os.path.join(input_dir, "ApplyOrbitGraph.xml")
+workflow_graph = os.path.join(input_dir, "sar_workflow.xml")
+output_dir = os.path.join(input_dir, "Orb_Products")
+interfero_dir = os.path.join(input_dir, "Interferograms")
 
-    os.makedirs(output_dir, exist_ok=True)
+os.makedirs(output_dir, exist_ok=True)
+os.makedirs(interfero_dir, exist_ok=True)
 
-    for zip_path in selected_files:
-        if not os.path.exists(zip_path):
-            print(f"⚠️ No se encontró el archivo: {zip_path}")
-            continue
 
-        # Generar nombre de salida
-        file_name = os.path.basename(zip_path).replace(".zip", "_processed.tif")
-        output_path = os.path.join(output_dir, file_name)
+zip_files = glob(os.path.join(input_dir, "*.zip"))
+orb_files = []
 
-        # Ejecutar SNAP GPT con el workflow
-        cmd = [
-            "/opt/snap/bin/gpt",
-            workflow_xml,
-            f"-Psource={zip_path}",
-            f"-Poutput={output_path}"
-        ]
-        print(f"▶️ Procesando {zip_path} → {output_path}")
-        try:
-            subprocess.run(cmd, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"❌ Error procesando {zip_path}: {e}")
+for zipf in zip_files:
+    base_name = os.path.basename(zipf).replace(".zip", "_Orb.dim")
+    orb_file = os.path.join(output_dir, base_name)
+    print(f"Procesando órbita: {zipf}")
+    subprocess.run([snap_gpt, orbit_graph, "-Pinput="+zipf, "-Poutput="+orb_file])
+    orb_files.append(orb_file)
 
-    # Borrar archivo temporal al terminar
-    os.remove(temp_file_path)
-    print("🗑️ Archivo temporal eliminado")
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Procesar imágenes SAR con SNAP GPT")
-    parser.add_argument(
-        "--temp_file", required=True, help="Archivo temporal con lista de productos seleccionados"
-    )
-    parser.add_argument(
-        "--workflow",
-        default=os.path.join(os.path.dirname(__file__), "sar_workflow.xml"),
-        help="Archivo XML del workflow SNAP (por defecto: sar_workflow.xml en el mismo directorio que el script)"
-    )
-    parser.add_argument(
-        "--output_dir",
-        default="/home/laura_montaner/data/SAR_preprocessed",
-        help="Directorio de salida"
-    )
-    args = parser.parse_args()
+def get_polarization(dim_file):
+    tree = ET.parse(dim_file)
+    root = tree.getroot()
+    pols = set()
+    for band in root.findall(".//band"):
+        pol_name = band.get("name")
+        if pol_name:
+            # Ejemplo: VV, VH, HV, HH
+            pols.add(pol_name.upper())
+    return pols
 
-    process_sar(args.temp_file, args.workflow, args.output_dir)
+
+orb_files_info = []
+
+for orb in orb_files:
+    pols = get_polarization(orb)
+    orb_files_info.append({"file": orb, "polarizations": pols})
+
+
+pairs = []
+for i in range(len(orb_files_info)):
+    for j in range(i+1, len(orb_files_info)):
+        common_pol = orb_files_info[i]["polarizations"].intersection(
+            orb_files_info[j]["polarizations"]
+        )
+        if common_pol:
+            
+            file_i = orb_files_info[i]["file"]
+            file_j = orb_files_info[j]["file"]
+            master, slave = sorted([file_i, file_j])
+            pairs.append({"master": master, "slave": slave, "pol": list(common_pol)[0]})
+
+for idx, pair in enumerate(pairs):
+    output_file = os.path.join(interfero_dir, f"interf_{idx+1}.dim")
+    print(f"Generando interferograma {idx+1}: {pair['master']} + {pair['slave']} (Pol: {pair['pol']})")
+    subprocess.run([
+        snap_gpt, workflow_graph,
+        f"-Pmaster={pair['master']}",
+        f"-Pslave={pair['slave']}",
+        f"-Poutput={output_file}"
+    ])
