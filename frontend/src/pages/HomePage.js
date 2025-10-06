@@ -1,17 +1,15 @@
-// src/App.js
-import React, { useState } from 'react'; // 1. Importa useState
-import { Link } from 'react-router-dom'; // 1. Importa Link
+import React, { useState } from 'react'; 
+import { Link } from 'react-router-dom'; 
 import '../App.css';
 import Header from '../components/Header';
 import StorySection from '../components/StorySection';
 import ImageComparator from '../components/ImageComparator';
-import SolutionCard from '../components/SolutionCard'; // 1. Importa el nuevo componente de tarjeta
+import SolutionCard from '../components/SolutionCard'; 
 
-// ... (las otras importaciones de imágenes se mantienen igual)
 import santiagoImg from '../assets/santiago.jpeg';
 import radarImg from '../assets/radar.jpg';
 import terrenoImg from '../assets/terreno.jpg';
-import sarBefore from '../assets/sar_2020.png'; // Teniendo en cuenta tu .png
+import sarBefore from '../assets/sar_2020.png'; 
 import sarAfter from '../assets/sar_2025.jpeg';
 import subsidenciaImg from '../assets/subsidencia.png';
 import extraccionImg from '../assets/extraccion.png';
@@ -20,8 +18,8 @@ import hidrica2Img from '../assets/hidrica2.jpg';
 import DGAImg from '../assets/DGA.jpg';
 import DGA2Img from '../assets/DGA2.jpg';
 
-import Footer from '../components/Footer'; // Importa el Footer
-import { FaChevronDown } from 'react-icons/fa'; // Importa el icono
+import Footer from '../components/Footer'; 
+import { FaChevronDown } from 'react-icons/fa'; 
 
 
 
@@ -34,7 +32,7 @@ function HomePage() {
       <Header activeLink={activeLink}/>
       <main className="story-container">
 
-        {/* --- TEMA: INICIO --- */}
+        {}
         <StorySection id="intro-1" imageUrl={santiagoImg} onInView={setActiveLink}>
           <h2>El Hundimiento Silencioso de Santiago</h2>
           <p>Bajo nuestros pies, la tierra cede. Un fenómeno invisible amenaza nuestra infraestructura y seguridad hídrica, impulsado por una causa que a menudo ignoramos.</p>
@@ -56,7 +54,7 @@ function HomePage() {
           </div>
         </StorySection>
 
-        {/* --- TEMA: PROBLEMA --- */}
+        {}
         <StorySection id="problema-1" imageUrl={extraccionImg} onInView={setActiveLink}>
           <h2>Sobreextracción de Aguas Subterráneas</h2>
           <p>El problema central radica en la extracción de agua a un ritmo mayor que el de la recarga natural. Esto agota las reservas y causa daños estructurales en los acuíferos.</p>
@@ -77,7 +75,7 @@ function HomePage() {
           <ImageComparator before={sarBefore} after={sarAfter} />
         </StorySection>
 
-        {/* --- TEMA: SOLUCIÓN --- */}
+        {}
         <StorySection id="solucion-1" imageUrl={terrenoImg} onInView={setActiveLink}>
           <h2>Soluciones Actuales: ¿Suficientes?</h2>
           <p>Los métodos actuales de monitoreo y fiscalización son vitales, pero a menudo se enfrentan a desafíos de escala y oportunidad.</p>

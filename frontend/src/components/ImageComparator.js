@@ -1,4 +1,3 @@
-// src/components/ImageComparator.js
 import React from 'react';
 import ReactCompareImage from 'react-compare-image';
 import './ImageComparator.css';

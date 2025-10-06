@@ -1,12 +1,9 @@
-// src/pages/MapPage.js
 import React from 'react';
 import './MapPage.css';
 
-// 1. Importa los componentes de navegación
 import HeaderSimple from '../components/HeaderSimple';
 import Footer from '../components/Footer';
 
-// Importamos las imágenes que usaremos
 import santiagoBg from '../assets/santiago.jpeg';
 import mapaEjemplo from '../assets/mapa_ejemplo.png';
 
@@ -19,15 +16,15 @@ const MapPage = () => {
     <>
     <HeaderSimple/>
     <div className="map-page" style={pageStyle}>
-      {/* Por ahora no tenemos Header ni Footer, los añadiremos después */}
+      {}
       <div className="map-layout-container">
         
-        {/* Columna Izquierda: El Visor del Mapa */}
+        {}
         <div className="map-viewer">
           <img src={mapaEjemplo} alt="Mapa de subsidencia del terreno en Santiago" />
         </div>
 
-        {/* Columna Derecha: La Descripción */}
+        {}
         <div className="map-description">
           <h2>Análisis Interferométrico (InSAR)</h2>
           <p>

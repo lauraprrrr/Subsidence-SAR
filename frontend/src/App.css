@@ -1,6 +1,6 @@
 body {
   background-color: #111418;
-  margin: 0; /* Asegúrate de que no haya márgenes por defecto */
+  margin: 0; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -9,7 +9,6 @@ body {
 .story-container {
   padding-top: 0px;
 }
-/* Indicador de Scroll */
 .scroll-indicator {
   position: absolute;
   bottom: 30px;
@@ -20,7 +19,6 @@ body {
   animation: bounce 2s infinite;
 }
 
-/* Animación de rebote */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateX(-50%) translateY(0);
@@ -33,12 +31,11 @@ body {
   }
 }
 
-/* Estilo para nuestro botón de navegación principal */
 .btn-primary {
   display: inline-block;
-  margin-top: 1.5rem; /* Espacio para separarlo del texto superior */
+  margin-top: 1.5rem; 
   padding: 12px 24px;
-  background-color: var(--color-accent-blue); /* Usamos el azul de la NASA */
+  background-color: var(--color-accent-blue); 
   color: white;
   text-decoration: none;
   font-family: var(--font-primary);
@@ -53,5 +50,5 @@ body {
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(11, 61, 145, 0.4); /* Sombra azul al pasar el cursor */
+  box-shadow: 0 8px 20px rgba(11, 61, 145, 0.4); 
 }

@@ -1,4 +1,3 @@
-// src/components/Footer.js
 import React from 'react';
 import { FaGlobe } from 'react-icons/fa';
 import './Footer.css';

@@ -1,4 +1,3 @@
-// src/components/SolutionCard.js
 import React from 'react';
 import './SolutionCard.css';
 

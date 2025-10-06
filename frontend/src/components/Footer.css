@@ -1,7 +1,6 @@
-/* src/components/Footer.css */
 .site-footer {
-  background-color: #e8e8e8; /* Un gris muy claro para el footer */
-  color: #555; /* Texto gris oscuro */
+  background-color: #e8e8e8; 
+  color: #555; 
   text-align: center;
   padding: 2rem;
   border-top: 1px solid #ccc;

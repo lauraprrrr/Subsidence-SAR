@@ -1,5 +1,4 @@
-// src/components/Header.js
-import React, { useState } from 'react'; // 1. Importa useState
+import React, { useState } from 'react'; 
 import { FaSatellite } from 'react-icons/fa';
 import { Link } from 'react-scroll';
 import './Header.css';
@@ -40,13 +39,13 @@ const Header = ({ activeLink }) => {
     <header className="site-header">
       <div className="header-content">
         
-        {/* --- ESTE ES EL BLOQUE QUE FALTABA --- */}
+        {}
         <Link
-          to="intro-1"     // Apunta a la primera sección de todas
+          to="intro-1"     
           smooth={true}
           offset={-80}
           duration={500}
-          className="site-title-link" // Usamos la clase que ya teníamos para quitar el subrayado
+          className="site-title-link" 
         >
           <div className="site-title-container">
             <FaSatellite className="site-icon" />
@@ -59,14 +58,14 @@ const Header = ({ activeLink }) => {
             <div 
               key={item.key} 
               className="nav-item"
-              onMouseEnter={() => setOpenMenu(item.key)} // Abre el menú al entrar
-              onMouseLeave={() => setOpenMenu(null)}   // Cierra el menú al salir
+              onMouseEnter={() => setOpenMenu(item.key)} 
+              onMouseLeave={() => setOpenMenu(null)}   
             >
               <span className={activeLink.startsWith(item.key) ? 'nav-label active' : 'nav-label'}>
                 {item.label}
               </span>
 
-              {/* Menú Desplegable */}
+              {}
               <div className={`dropdown-menu ${openMenu === item.key ? 'open' : ''}`}>
                 {item.subItems.map((subItem) => (
                   <Link
@@ -75,7 +74,7 @@ const Header = ({ activeLink }) => {
                     smooth={true}
                     offset={-80}
                     duration={500}
-                    onClick={() => setOpenMenu(null)} // Cierra el menú al hacer clic
+                    onClick={() => setOpenMenu(null)} 
                   >
                     {subItem.label}
                   </Link>

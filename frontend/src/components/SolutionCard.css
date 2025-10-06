@@ -1,30 +1,27 @@
-/* src/components/SolutionCard.css */
 
-/* Contenedor para alinear las tarjetas */
 .cards-container {
   display: flex;
   justify-content: center;
-  align-items: stretch; /* Asegura que las tarjetas tengan la misma altura si el texto varía */
-  flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea en pantallas pequeñas */
-  gap: 2rem; /* Espacio entre las tarjetas */
+  align-items: stretch; 
+  flex-wrap: wrap;
+  gap: 2rem; 
   margin-top: 2rem;
   width: 100%;
 }
 
-/* Estilo de cada tarjeta individual */
 .solution-card {
-  background-color: #d7d0d0; /* Fondo blanco sólido para las tarjetas */
+  background-color: #d7d0d0; 
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1.5rem;
   max-width: 300px;
-  flex: 1; /* Permite que las tarjetas crezcan y ocupen el espacio disponible */
+  flex: 1; 
   min-width: 250px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Efecto sutil al pasar el cursor sobre la tarjeta */
+
 .solution-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 20px rgba(97, 218, 251, 0.2);
